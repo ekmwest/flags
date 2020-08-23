@@ -44,6 +44,16 @@ img {
     display:block;
     margin-left: auto;
     margin-right: auto;
+    cursor: pointer;
+}
+
+img.open {
+    position: fixed;
+    width: 50vw;
+    height: auto;
+    left: 10vw;
+    right: 10vw;
+    top: 2vw;
 }
 
 .country-name {
