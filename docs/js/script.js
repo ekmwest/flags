@@ -4,20 +4,6 @@ document.addEventListener('click', event => {
     }
 
     openModal(event.target);
-
-    // let open = document.querySelector('.open');
-    // if (open) {
-    //     open.classList.remove('open');
-    //     return;
-    // }
-
-    // if (!event.target.matches('.flag')) {
-    //     return;
-    // }
-
-    // let imgContainer = event.target.closest('.flag-container');
-    // imgContainer.classList.add('open');
-
 });
 
 document.addEventListener('click', event => {
@@ -35,16 +21,46 @@ function openModal(flagElement) {
     modal.classList.add('modal');
 
     const img = document.createElement('img');
+
+    var rect = flagElement.getBoundingClientRect();
+
+    img.style.top = rect.top + 'px';
+    img.style.left = rect.left + 'px';
+    img.style.width = rect.width + 'px';
+    img.style.height = rect.height + 'px';
+
+    const viewportAspectRatio = document.documentElement.clientWidth / document.documentElement.clientHeight;
+    const flagAspectRatio = rect.width / rect.height;
+
     img.onload = event => {
-        setTimeout(() => modal.classList.add('open'), 1);
+        setTimeout(() => {
+            modal.classList.add('open');
+
+            let zoom = 0.9;
+
+            if (flagAspectRatio > viewportAspectRatio) {
+                zoom = zoom * document.documentElement.clientWidth / rect.width;
+            } else {
+                zoom = zoom * document.documentElement.clientHeight / rect.height;
+            }
+
+            const zoomedWidth = zoom * rect.width;
+            const zoomedHeight = zoom * rect.height;
+
+            img.style.width = zoomedWidth + 'px';
+            img.style.height = zoomedHeight + 'px';
+
+            img.style.left = ((document.documentElement.clientWidth - zoomedWidth) / 2) + 'px';
+            img.style.top = ((document.documentElement.clientHeight - zoomedHeight) / 2) + 'px';
+
+        }, 10);
     }
+
     img.classList.add('flag-in-modal');
     img.src = flagElement.src;
     modal.appendChild(img);
 
     document.body.appendChild(modal);
-
-    // setTimeout(closeModal, 3000);
 }
 
 function closeModal() {
