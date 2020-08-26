@@ -16,11 +16,23 @@ document.addEventListener('click', event => {
     closeModal();
 });
 
+document.addEventListener('keyup', event => {
+    const modal = document.querySelector('.modal');
+
+    if (!modal) {
+        return;
+    }
+
+    closeModal();
+})
+
 function openModal(flagElement) {
     const modal = document.createElement('div');
     modal.classList.add('modal');
 
     const img = document.createElement('img');
+    img.classList.add('flag-in-modal');
+    modal.appendChild(img);
 
     var rect = flagElement.getBoundingClientRect();
 
@@ -52,13 +64,10 @@ function openModal(flagElement) {
 
             img.style.left = ((document.documentElement.clientWidth - zoomedWidth) / 2) + 'px';
             img.style.top = ((document.documentElement.clientHeight - zoomedHeight) / 2) + 'px';
-
         }, 10);
     }
 
-    img.classList.add('flag-in-modal');
     img.src = flagElement.src;
-    modal.appendChild(img);
 
     document.body.appendChild(modal);
 }
