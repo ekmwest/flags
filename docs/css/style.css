@@ -95,11 +95,12 @@ body {
     left: 0;
     padding: 4vw;
     background-color: rgba(0, 0, 0, 0);
-    transition: background-color .5s;
+    transition: background-color .2s;
 }
 
 .modal.open {
     background-color: rgba(0, 0, 0, .9);
+    transition: background-color .5s;
 }
 
 /*
@@ -108,5 +109,9 @@ body {
 
 .flag-in-modal {
     position: fixed;
-    transition: all .4s;
+    transition: all .2s;
+}
+
+.modal.open .flag-in-modal {
+    transition: all .3s;
 }

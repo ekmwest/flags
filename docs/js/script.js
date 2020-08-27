@@ -44,6 +44,11 @@ function openModal(flagElement) {
     img.style.width = rect.width + 'px';
     img.style.height = rect.height + 'px';
 
+    img.dataset.top = img.style.top;
+    img.dataset.left = img.style.left;
+    img.dataset.width = img.style.width;
+    img.dataset.height = img.style.height;
+
     const viewportAspectRatio = document.documentElement.clientWidth / document.documentElement.clientHeight;
     const flagAspectRatio = rect.width / rect.height;
 
@@ -82,5 +87,14 @@ function closeModal() {
         return;
     }
 
-    document.body.removeChild(modal);
+    const img = modal.querySelector('.flag-in-modal');
+
+    img.style.top = img.dataset.top;
+    img.style.left = img.dataset.left;
+    img.style.width = img.dataset.width;
+    img.style.height = img.dataset.height;
+
+    modal.classList.remove('open');
+
+    setTimeout(() => document.body.removeChild(modal), 500);
 }
