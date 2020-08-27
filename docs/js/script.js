@@ -17,8 +17,11 @@ document.addEventListener('click', event => {
 });
 
 document.addEventListener('keyup', event => {
-    const modal = document.querySelector('.modal');
+    if (event.key !== 'Escape') {
+        return;
+    }
 
+    const modal = document.querySelector('.modal');
     if (!modal) {
         return;
     }
