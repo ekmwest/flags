@@ -37,6 +37,11 @@ function openModal(flagElement) {
     img.classList.add('flag-in-modal');
     modal.appendChild(img);
 
+    const caption = document.createElement('p');
+    caption.classList.add('modal-caption');
+    caption.textContent = flagElement.getAttribute('alt');
+    modal.appendChild(caption);
+
     var rect = flagElement.getBoundingClientRect();
 
     img.style.top = rect.top + 'px';
@@ -62,16 +67,24 @@ function openModal(flagElement) {
                 zoom = zoom * document.documentElement.clientWidth / rect.width;
             } else {
                 zoom = zoom * document.documentElement.clientHeight / rect.height;
+                zoom = 0.9 * zoom; // extra space for caption
             }
 
             const zoomedWidth = zoom * rect.width;
             const zoomedHeight = zoom * rect.height;
 
+            const zoomedLeft = ((document.documentElement.clientWidth - zoomedWidth) / 2);
+            const zoomedTop = ((document.documentElement.clientHeight - zoomedHeight) / 2);
+
             img.style.width = zoomedWidth + 'px';
             img.style.height = zoomedHeight + 'px';
 
-            img.style.left = ((document.documentElement.clientWidth - zoomedWidth) / 2) + 'px';
-            img.style.top = ((document.documentElement.clientHeight - zoomedHeight) / 2) + 'px';
+            img.style.left = zoomedLeft + 'px';
+            img.style.top = zoomedTop + 'px';
+
+            caption.style.top = (zoomedHeight + zoomedTop) + 'px';
+            caption.style.left = zoomedLeft + 'px';
+            caption.style.width = zoomedWidth + 'px';
         }, 10);
     }
 

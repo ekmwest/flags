@@ -115,3 +115,20 @@ body {
 .modal.open .flag-in-modal {
     transition: all .3s;
 }
+
+
+.modal-caption {
+    color: #fff;
+    font-size: 24px;
+    position: fixed;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    opacity: 0;
+    transition: all .1s;
+}
+
+.modal.open .modal-caption {
+    transition: all .6s .2s;
+    opacity: 1;
+}
