@@ -1,0 +1,117 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background-color: #ddd;
+}
+
+/*
+ * Flags Grid
+ */
+
+.flags {
+    display: grid;
+    margin: 4vw 0;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+@media only screen and (max-width: 600px) {
+    .flags {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .flags {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/*
+ * Flags Grid Items
+ */
+
+.flags>div {
+    justify-self: center;
+    height: 16vw;
+}
+
+@media only screen and (max-width: 600px) {
+    .flags>div {
+        height: 25vw;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .flags>div {
+        height: 38vw;
+    }
+}
+
+/*
+ * Flag Container
+ */
+
+.flag-container {
+    height: 45%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*
+ * Flag
+ */
+
+.flag {
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    cursor: pointer;
+}
+
+/*
+ * Country Name
+ */
+
+.country-name {
+    display: block;
+    text-align: center;
+    margin-top: 6px;
+    color: #000;
+    line-height: 1.1;
+}
+
+/*
+ * Modal
+ */
+
+.modal {
+    cursor: pointer;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 4vw;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color .2s;
+}
+
+.modal.open {
+    background-color: rgba(0, 0, 0, .9);
+    transition: background-color .5s;
+}
+
+/*
+ * Flag In Modal
+ */
+
+.flag-in-modal {
+    position: fixed;
+    transition: all .2s;
+}
+
+.modal.open .flag-in-modal {
+    transition: all .3s;
+}
