@@ -1,6 +1,6 @@
-import * as path from "https://deno.land/std@0.66.0/path/mod.ts";
-import { exists } from "https://deno.land/std@0.66.0/fs/mod.ts";
-import { sideBuild } from "https://cdn.jsdelivr.net/gh/ekmwest/side@1.0.4/mod.js";
+import * as path from "https://deno.land/std@0.67.0/path/mod.ts";
+import { exists } from "https://deno.land/std@0.67.0/fs/mod.ts";
+import { sideBuild } from "https://cdn.jsdelivr.net/gh/ekmwest/side@1.0.7/mod.js";
 import { DB } from "https://deno.land/x/sqlite@v2.3.0/mod.ts";
 
 const rootPath = Deno.cwd();
