@@ -106,7 +106,7 @@ body {
 }
 
 .modal.open {
-    background-color: rgba(0, 0, 0, .9);
+    background-color: rgba(30, 30, 30, .96);
     transition: background-color .5s;
 }
 
