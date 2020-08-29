@@ -33,13 +33,13 @@ async function buildFlagsComponents() {
 
     const htmlElements = [];
 
-    for (const [code, name] of db.query("SELECT code, name FROM countries ORDER BY name")) {
+    for (const [code, common_name] of db.query("SELECT code, common_name FROM countries ORDER BY common_name")) {
 
         htmlElements.push(`
         <div>
             <div class="flag-container">
-                <img class="flag" src="/${code}.svg" alt="${name}" />
-                <span class="country-name">${name}</span>
+                <img class="flag" src="/${code}.svg" alt="${common_name}" />
+                <span class="country-name">${common_name}</span>
             </div>
         </div>`);
     }

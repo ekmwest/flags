@@ -77,9 +77,16 @@ body {
 .country-name {
     display: block;
     text-align: center;
-    margin-top: 6px;
+    margin: 6px 4px 0;
     color: #000;
     line-height: 1.1;
+    font-size: 16px;
+}
+
+@media only screen and (max-width: 980px) {
+    .country-name {
+        font-size: 14px;
+    }
 }
 
 /*
@@ -116,8 +123,11 @@ body {
     transition: all .3s;
 }
 
+/*
+ * Modal Caption
+ */
 
-.modal-caption {
+ .modal-caption {
     color: #fff;
     font-size: 24px;
     position: fixed;
