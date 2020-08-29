@@ -131,8 +131,7 @@ body {
     color: #fff;
     font-size: 24px;
     position: fixed;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 16px auto 0;
     text-align: center;
     opacity: 0;
     transition: all .1s;
