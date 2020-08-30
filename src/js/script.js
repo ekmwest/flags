@@ -89,9 +89,7 @@ function openModal(flagElement) {
         }, 10);
     };
 
-    // disable scroll
-    document.body.style.top = `-${window.pageYOffset}px`;
-    document.body.style.position = 'fixed';
+    disableScroll();
 
     document.body.appendChild(modal);
     img.src = flagElement.src;
@@ -104,11 +102,7 @@ function closeModal() {
         return;
     }
 
-    // enable scroll
-    const scrollY = document.body.style.top;
-    document.body.style.position = '';
-    document.body.style.top = '';
-    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    enableScroll();
 
     const img = modal.querySelector('.flag-in-modal');
     img.style.transform = img.dataset.transform;
@@ -116,4 +110,15 @@ function closeModal() {
     modal.classList.remove('open');
 
     setTimeout(() => document.body.removeChild(modal), 300);
+}
+
+function disableScroll() {
+    const initialClientWidth = document.documentElement.clientWidth;
+    document.body.style.overflowY = 'hidden';
+    document.body.style.paddingRight = (document.documentElement.clientWidth - initialClientWidth) + 'px';
+}
+
+function enableScroll() {
+    document.body.style.overflowY = '';
+    document.body.style.paddingRight = '';
 }
