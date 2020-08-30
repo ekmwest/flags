@@ -38,7 +38,7 @@ async function buildFlagsComponents() {
         htmlElements.push(`
         <div>
             <div class="flag-container">
-                <img class="flag" src="/${code}.svg" alt="${common_name}" />
+                <img class="flag" src="/${code.toLowerCase()}.svg" alt="${common_name}" />
                 <span class="country-name">${common_name}</span>
             </div>
         </div>`);
