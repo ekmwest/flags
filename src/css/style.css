@@ -145,6 +145,13 @@ body.scroll-disabled {
     transition: all .1s;
 }
 
+@media only screen and (max-height: 414px) {
+    .modal-caption {
+        font-size: 18px;
+        margin: 8px auto 0;
+    }
+}
+
 .modal.open .modal-caption {
     transition: all .6s .2s;
     opacity: 1;
