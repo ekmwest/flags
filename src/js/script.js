@@ -53,7 +53,7 @@ function openModal(flagElement) {
     const zoomedHeight = zoom * rect.height;
 
     const zoomedLeft = ((documentElement_clientWidth - zoomedWidth) / 2);
-    const zoomedTop = ((documentElement_clientHeight - zoomedHeight) / 2);
+    const zoomedTop = ((documentElement_clientHeight - zoomedHeight) / 3);
 
     const translateX = (rect.width / 2 + rect.left - zoomedWidth / 2 - zoomedLeft);
     const translateY = (rect.height / 2 + rect.top - zoomedHeight / 2 - zoomedTop);
