@@ -113,12 +113,41 @@ function closeModal() {
 }
 
 function disableScroll() {
+
+    // (1) Solution from benfrain.com
     const initialClientWidth = document.documentElement.clientWidth;
-    document.body.style.overflowY = 'hidden';
+    document.body.classList.add('modal-open');
     document.body.style.paddingRight = (document.documentElement.clientWidth - initialClientWidth) + 'px';
+
+    // (2) Solution from javascript info
+    // const initialClientWidth = document.documentElement.clientWidth;
+    // document.body.style.overflowY = 'hidden';
+    // document.body.style.paddingRight = (document.documentElement.clientWidth - initialClientWidth) + 'px';
+
+    // (3) Another solution
+    // document.addEventListener('touchmove', preventDefault, { passive: false });
+    // document.addEventListener('touchforcechange', preventDefault, { passive: false });
+    // document.addEventListener('scroll', preventDefault, { passive: false });
 }
 
 function enableScroll() {
-    document.body.style.overflowY = '';
+
+    // (1) Solution from benfrain.com
+    document.body.classList.remove('modal-open');
     document.body.style.paddingRight = '';
+
+    // (2) Solution from javascript info
+    // document.body.style.overflowY = '';
+    // document.body.style.paddingRight = '';
+
+    // (3) Another solution
+    // document.removeEventListener('touchmove', preventDefault, { passive: false });
+    // document.removeEventListener('touchforcechange', preventDefault, { passive: false });
+    // document.removeEventListener('scroll', preventDefault, { passive: false });
 }
+
+// function preventDefault(event) {
+//     console.log('s');
+//     event.preventDefault();
+//     event.stopImmediatePropagation();
+// }
