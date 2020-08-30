@@ -5,7 +5,7 @@ body {
     overflow-y: scroll;
 }
 
-body.modal-open {
+body.scroll-disabled {
     touch-action: none;
     -webkit-overflow-scrolling: none;
     overflow: hidden;

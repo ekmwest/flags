@@ -30,6 +30,8 @@ document.addEventListener('keyup', event => {
 })
 
 function openModal(flagElement) {
+    disableScroll();
+
     const documentElement_clientWidth = document.documentElement.clientWidth;
     const documentElement_clientHeight = document.documentElement.clientHeight;
 
@@ -89,8 +91,6 @@ function openModal(flagElement) {
         }, 10);
     };
 
-    disableScroll();
-
     document.body.appendChild(modal);
     img.src = flagElement.src;
 }
@@ -113,41 +113,12 @@ function closeModal() {
 }
 
 function disableScroll() {
-
-    // (1) Solution from benfrain.com
     const initialClientWidth = document.documentElement.clientWidth;
-    document.body.classList.add('modal-open');
+    document.body.classList.add('scroll-disabled');
     document.body.style.paddingRight = (document.documentElement.clientWidth - initialClientWidth) + 'px';
-
-    // (2) Solution from javascript info
-    // const initialClientWidth = document.documentElement.clientWidth;
-    // document.body.style.overflowY = 'hidden';
-    // document.body.style.paddingRight = (document.documentElement.clientWidth - initialClientWidth) + 'px';
-
-    // (3) Another solution
-    // document.addEventListener('touchmove', preventDefault, { passive: false });
-    // document.addEventListener('touchforcechange', preventDefault, { passive: false });
-    // document.addEventListener('scroll', preventDefault, { passive: false });
 }
 
 function enableScroll() {
-
-    // (1) Solution from benfrain.com
-    document.body.classList.remove('modal-open');
+    document.body.classList.remove('scroll-disabled');
     document.body.style.paddingRight = '';
-
-    // (2) Solution from javascript info
-    // document.body.style.overflowY = '';
-    // document.body.style.paddingRight = '';
-
-    // (3) Another solution
-    // document.removeEventListener('touchmove', preventDefault, { passive: false });
-    // document.removeEventListener('touchforcechange', preventDefault, { passive: false });
-    // document.removeEventListener('scroll', preventDefault, { passive: false });
 }
-
-// function preventDefault(event) {
-//     console.log('s');
-//     event.preventDefault();
-//     event.stopImmediatePropagation();
-// }
