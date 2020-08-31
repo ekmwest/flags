@@ -125,11 +125,13 @@ body.scroll-disabled {
 
 .flag-in-modal {
     position: fixed;
-    transition: all .2s;
+    opacity: 0;
+    transition: transform .2s, opacity .05s .15s;
 }
 
 .modal.open .flag-in-modal {
-    transition: all .3s;
+    opacity: 1;
+    transition: transform .3s;
 }
 
 /*
