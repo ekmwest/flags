@@ -62,6 +62,10 @@ function openModal(flagElement) {
 
     const modal = document.createElement('div');
     modal.classList.add('modal');
+    modal.addEventListener('wheel', closeModal);
+    if ("ontouchstart" in window) {
+        modal.addEventListener('touchmove', closeModal);
+    }
 
     const img = document.createElement('img');
     img.classList.add('flag-in-modal');
@@ -102,14 +106,20 @@ function closeModal() {
         return;
     }
 
-    enableScroll();
+    modal.removeEventListener('wheel', closeModal);
+    if ("ontouchstart" in window) {
+        modal.removeEventListener('touchmove', closeModal);
+    }
 
     const img = modal.querySelector('.flag-in-modal');
     img.style.transform = img.dataset.transform;
 
     modal.classList.remove('open');
 
-    setTimeout(() => document.body.removeChild(modal), 300);
+    setTimeout(() => {
+        document.body.removeChild(modal);
+        enableScroll();
+    }, 300);
 }
 
 function disableScroll() {
