@@ -89,10 +89,8 @@ function openModal(flagElement) {
     modal.appendChild(caption);
 
     img.onload = event => {
-        setTimeout(() => {
-            modal.classList.add('open');
-            img.style.transform = "";
-        }, 10);
+        modal.classList.add('open');
+        img.style.transform = "";
     };
 
     document.body.appendChild(modal);
@@ -106,20 +104,25 @@ function closeModal() {
         return;
     }
 
+    const img = modal.querySelector('.flag-in-modal');
+
     modal.removeEventListener('wheel', closeModal);
     if ("ontouchstart" in window) {
         modal.removeEventListener('touchmove', closeModal);
     }
 
-    const img = modal.querySelector('.flag-in-modal');
-    img.style.transform = img.dataset.transform;
+    modal.ontransitionend = e => {
+        if (e.target === modal || e.target === img) {
+            modal.ontransitionend = null;
+            document.body.removeChild(modal);
+            enableScroll();
+        }
+    };
 
-    modal.classList.remove('open');
-
-    setTimeout(() => {
-        document.body.removeChild(modal);
-        enableScroll();
-    }, 300);
+    requestAnimationFrame(() => {
+        img.style.transform = img.dataset.transform;
+        modal.classList.remove('open');
+    });
 }
 
 function disableScroll() {
