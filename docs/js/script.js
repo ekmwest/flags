@@ -88,12 +88,15 @@ function openModal(flagElement) {
     caption.style.width = zoomedWidth + 'px';
     modal.appendChild(caption);
 
+    document.body.appendChild(modal);
+
+    noop(modal.offsetHeight); // force layout
+
     img.onload = event => {
         modal.classList.add('open');
         img.style.transform = "";
     };
 
-    document.body.appendChild(modal);
     img.src = flagElement.src;
 }
 
@@ -135,3 +138,5 @@ function enableScroll() {
     document.body.classList.remove('scroll-disabled');
     document.body.style.paddingRight = '';
 }
+
+function noop(x) { }
