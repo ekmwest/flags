@@ -1,3 +1,45 @@
+/* =====================================
+    Search
+    ==================================== */
+
+const countries = Array.from(document.querySelectorAll('.country-name')).map(countryNameElement => {
+    return {
+        name: countryNameElement.textContent.trim().toLowerCase(),
+        panel: countryNameElement.parentNode.parentNode
+    };
+});
+
+const searchPanel = document.querySelector('.search-panel');
+const searchInput = searchPanel.querySelector('input');
+
+const searchDebounce = 400;
+let searchDebounceTimeout = null;
+
+searchInput.addEventListener('input', () => {
+
+    if (searchDebounceTimeout) {
+        clearTimeout(searchDebounceTimeout);
+    }
+
+    searchDebounceTimeout = setTimeout(() => {
+        const searchQuery = searchInput.value.toLowerCase();
+
+        countries.forEach(country => {
+            if (country.name.includes(searchQuery)) {
+                country.panel.style.display = '';
+            } else {
+                country.panel.style.display = 'none';
+            }
+        });
+    }, searchDebounce);
+});
+
+
+
+/* =====================================
+    Flag Open / Close
+    ==================================== */
+
 document.addEventListener('click', event => {
     if (!event.target.matches('.flag')) {
         return;
@@ -131,11 +173,14 @@ function closeModal() {
 function disableScroll() {
     const initialClientWidth = document.documentElement.clientWidth;
     document.body.classList.add('scroll-disabled');
-    document.body.style.paddingRight = (document.documentElement.clientWidth - initialClientWidth) + 'px';
+    const padding = document.documentElement.clientWidth - initialClientWidth;
+    searchPanel.style.paddingRight = padding + 'px';
+    document.body.style.paddingRight = padding + 'px';
 }
 
 function enableScroll() {
     document.body.classList.remove('scroll-disabled');
+    searchPanel.style.paddingRight = '';
     document.body.style.paddingRight = '';
 }
 
