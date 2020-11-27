@@ -4,4 +4,8 @@ A collection of flags for all the entries in [ISO 3166-1](https://en.wikipedia.o
 
 Each flag is located at ```https://flags.ekmwest.io/[(Alpha-2).toLowerCase()].svg```. For example, the swedish flag is located at https://flags.ekmwest.io/se.svg.
 
-All flags are listed here: https://flags.ekmwest.io. In that list, simplified common names are used for countries and territories.
+View flags at: https://flags.ekmwest.io
+
+JSON data file: https://flags.ekmwest.io/countries.json
+
+JavaScript import from: https://flags.ekmwest.io/countries.js

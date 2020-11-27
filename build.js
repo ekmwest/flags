@@ -7,10 +7,14 @@ const sourcePath = path.join(rootPath, 'src');
 const targetPath = path.join(rootPath, 'docs');
 const componentsPath = path.join(sourcePath, 'components');
 const svgPath = path.join(rootPath, 'data/svg');
+const jsonDataFile = path.join(targetPath, 'countries.json');
+const jsDataFile = path.join(targetPath, 'countries.js');
+const siteUrl = 'https://flags.ekmwest.io';
 
 copySvgs();
 await buildFlagsComponents();
 sideBuild(sourcePath, targetPath, componentsPath, false);
+buildDataFiles();
 
 async function copySvgs() {
     for await (const dirEntry of Deno.readDir(svgPath)) {
@@ -59,4 +63,27 @@ async function exists(filePath) {
 
         throw err;
     }
+}
+
+async function buildDataFiles() {
+    const db = new DB('data/countries.db');
+
+    const countries = [];
+
+    for (const [code, name, common_name, independent] of db.query("SELECT code, name, common_name, independent FROM countries ORDER BY code")) {
+
+        countries.push({
+            code: code,
+            name: name,
+            common_name: common_name,
+            independent: independent,
+            flag_url: `${siteUrl}/${code.toLowerCase()}.svg`
+        });
+    }
+
+    Deno.writeTextFile(jsonDataFile, JSON.stringify(countries, null, 4));
+
+    Deno.writeTextFile(jsDataFile, 'export let countries = ' + JSON.stringify(countries, null, 4) + ';');
+
+    db.close();
 }
