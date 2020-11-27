@@ -1,6 +1,5 @@
-import * as path from "https://deno.land/std@0.67.0/path/mod.ts";
-import { exists } from "https://deno.land/std@0.67.0/fs/mod.ts";
-import { sideBuild } from "https://cdn.jsdelivr.net/gh/ekmwest/side@1.0.7/mod.js";
+import * as path from "https://deno.land/std@0.79.0/path/mod.ts";
+import { sideBuild } from "https://cdn.jsdelivr.net/gh/ekmwest/side@1.1.2/mod.js";
 import { DB } from "https://deno.land/x/sqlite@v2.3.0/mod.ts";
 
 const rootPath = Deno.cwd();
@@ -47,4 +46,17 @@ async function buildFlagsComponents() {
     await Deno.writeTextFile(path.join(componentsPath, "flags.html"), htmlElements.join(''));
 
     db.close();
+}
+
+async function exists(filePath) {
+    try {
+        await Deno.lstat(filePath);
+        return true;
+    } catch (err) {
+        if (err instanceof Deno.errors.NotFound) {
+            return false;
+        }
+
+        throw err;
+    }
 }
