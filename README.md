@@ -1,4 +1,4 @@
-# flags
+# Flags
 
 A collection of flags for the entries in [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1).
 
@@ -13,4 +13,3 @@ A collection of flags for the entries in [ISO 3166-1](https://en.wikipedia.org/w
     ```js
     import { countries } from "https://flags.ekmwest.io/countries.js";
     ```
-    
