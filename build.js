@@ -1,33 +1,33 @@
-import * as path from "https://deno.land/std@0.79.0/path/mod.ts";
-import { sideBuild } from "https://cdn.jsdelivr.net/gh/ekmwest/side@1.1.2/mod.js";
-import { DB } from "https://deno.land/x/sqlite@v2.3.0/mod.ts";
+import { DB, build, path } from "./deps.js";
 
 const rootPath = Deno.cwd();
+
 const sourcePath = path.join(rootPath, 'src');
-const targetPath = path.join(rootPath, 'docs');
-const componentsPath = path.join(sourcePath, 'components');
+const buildPath = path.join(rootPath, 'docs');
+const snippetsPath = path.join(sourcePath, 'snippets');
+
 const svgPath = path.join(rootPath, 'data/svg');
-const jsonDataFile = path.join(targetPath, 'countries.json');
-const jsDataFile = path.join(targetPath, 'countries.js');
+const jsonDataFile = path.join(buildPath, 'countries.json');
+const jsDataFile = path.join(buildPath, 'countries.js');
 const siteUrl = 'https://flags.ekmwest.io';
 
 copySvgs();
 await buildFlagsComponents();
-sideBuild(sourcePath, targetPath, componentsPath, false);
+build({ sourcePath, buildPath, snippetsPath });
 buildDataFiles();
 
 async function copySvgs() {
     for await (const dirEntry of Deno.readDir(svgPath)) {
-        const targetFilePath = path.join(targetPath, dirEntry.name);
-        const targetExists = await exists(targetFilePath);
+        const buildFilePath = path.join(buildPath, dirEntry.name);
+        const buildExists = await exists(buildFilePath);
 
-        if (targetExists) {
+        if (buildExists) {
             continue;
         }
 
         const sourceFilePath = path.join(svgPath, dirEntry.name);
 
-        Deno.copyFile(sourceFilePath, targetFilePath);
+        Deno.copyFile(sourceFilePath, buildFilePath);
     }
 }
 
@@ -47,7 +47,7 @@ async function buildFlagsComponents() {
         </div>`);
     }
 
-    await Deno.writeTextFile(path.join(componentsPath, "flags.html"), htmlElements.join(''));
+    await Deno.writeTextFile(path.join(snippetsPath, "flags.html"), htmlElements.join(''));
 
     db.close();
 }
@@ -60,7 +60,6 @@ async function exists(filePath) {
         if (err instanceof Deno.errors.NotFound) {
             return false;
         }
-
         throw err;
     }
 }
@@ -76,7 +75,7 @@ async function buildDataFiles() {
             code: code,
             name: name,
             common_name: common_name,
-            independent: independent,
+            independent: independent ? true : false,
             flag_url: `${siteUrl}/${code.toLowerCase()}.svg`
         });
     }
