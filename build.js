@@ -1,88 +1,94 @@
-import { DB, build, path } from "./deps.js";
+import { DB, path } from "./deps.js";
 
 const rootPath = Deno.cwd();
 
 const sourcePath = path.join(rootPath, 'src');
-const buildPath = path.join(rootPath, 'docs');
-const snippetsPath = path.join(sourcePath, 'snippets');
+const includesPath = path.join(sourcePath, '_includes');
 
-const svgPath = path.join(rootPath, 'data/svg');
-const jsonDataFile = path.join(buildPath, 'countries.json');
-const jsDataFile = path.join(buildPath, 'countries.js');
-const siteUrl = 'https://flags.ekmwest.io';
+const flagsDataPath = path.join(rootPath, 'data/flags');
+const flagsSourcePath = path.join(sourcePath, 'flags');
 
-copySvgs();
-await buildFlagsComponents();
-build({ sourcePath, buildPath, snippetsPath });
-buildDataFiles();
+const jsonDataFile = path.join(sourcePath, 'countries.json');
+const jsDataFile = path.join(sourcePath, 'countries.js');
 
-async function copySvgs() {
-    for await (const dirEntry of Deno.readDir(svgPath)) {
-        const buildFilePath = path.join(buildPath, dirEntry.name);
-        const buildExists = await exists(buildFilePath);
+await build();
 
-        if (buildExists) {
-            continue;
-        }
-
-        const sourceFilePath = path.join(svgPath, dirEntry.name);
-
-        Deno.copyFile(sourceFilePath, buildFilePath);
-    }
+async function build() {
+    const countries = await createCountriesFromDB();
+    await makeFlagsInclude(countries);
+    await copyFlagsFromDataToSource();
+    await buildDataFiles(countries);
 }
 
-async function buildFlagsComponents() {
+async function createCountriesFromDB() {
+    const countries = [];
+
     const db = new DB('data/countries.db');
 
+    for (const [code, name, common_name, independent] of db.query("SELECT code, name, common_name, independent FROM countries ORDER BY common_name")) {
+
+        countries.push({
+            code,
+            name,
+            common_name,
+            independent: independent ? true : false
+        });
+    }
+
+    db.close();
+
+    return countries;
+}
+
+async function makeFlagsInclude(countries) {
     const htmlElements = [];
 
-    for (const [code, common_name] of db.query("SELECT code, common_name FROM countries ORDER BY common_name")) {
-
+    for (const country of countries) {
         htmlElements.push(`
         <div>
             <div class="flag-container">
-                <img class="flag" src="/${code.toLowerCase()}.svg" alt="${common_name}" />
-                <span class="country-name">${common_name}</span>
+                <img class="flag" src="/flags/${country.code.toLowerCase()}.svg" alt="${country.common_name}" />
+                <span class="country-name">${country.common_name}</span>
             </div>
         </div>`);
     }
 
-    await Deno.writeTextFile(path.join(snippetsPath, "flags.html"), htmlElements.join(''));
+    const html = htmlElements.join('');
 
-    db.close();
+    await Deno.writeTextFile(path.join(includesPath, "flags.html"), html);
 }
 
-async function exists(filePath) {
+function createFlagsIncludeHTML(countries) {
+    const htmlElements = [];
+
+    for (const country of countries) {
+        htmlElements.push(`
+        <div>
+            <div class="flag-container">
+                <img class="flag" src="/flags/${country.code.toLowerCase()}.svg" alt="${country.common_name}" />
+                <span class="country-name">${country.common_name}</span>
+            </div>
+        </div>`);
+    }
+
+    return htmlElements.join('');
+}
+
+async function copyFlagsFromDataToSource() {
     try {
-        await Deno.lstat(filePath);
-        return true;
-    } catch (err) {
-        if (err instanceof Deno.errors.NotFound) {
-            return false;
-        }
-        throw err;
+        await Deno.remove(flagsSourcePath, { recursive: true });
+    } catch (ex) {}
+
+    await Deno.mkdir(flagsSourcePath);
+
+    for await (const dirEntry of Deno.readDir(flagsDataPath)) {
+        const sourceFlagPath = path.join(flagsSourcePath, dirEntry.name);
+        const dataFlagPath = path.join(flagsDataPath, dirEntry.name);
+        await Deno.copyFile(dataFlagPath, sourceFlagPath);
     }
 }
 
-async function buildDataFiles() {
-    const db = new DB('data/countries.db');
-
-    const countries = [];
-
-    for (const [code, name, common_name, independent] of db.query("SELECT code, name, common_name, independent FROM countries ORDER BY code")) {
-
-        countries.push({
-            code: code,
-            name: name,
-            common_name: common_name,
-            independent: independent ? true : false,
-            flag_url: `${siteUrl}/${code.toLowerCase()}.svg`
-        });
-    }
-
-    Deno.writeTextFile(jsonDataFile, JSON.stringify(countries, null, 4));
-
-    Deno.writeTextFile(jsDataFile, 'export let countries = ' + JSON.stringify(countries, null, 4) + ';');
-
-    db.close();
+async function buildDataFiles(countries) {
+    await Deno.writeTextFile(jsDataFile, 'export let countries = ' + JSON.stringify(countries, null, 4) + ';');
+    await Deno.writeTextFile(jsonDataFile, JSON.stringify(countries, null, 4));
 }
