@@ -11,6 +11,8 @@ const flagsSourcePath = path.join(sourcePath, 'flags');
 const jsonDataFile = path.join(sourcePath, 'countries.json');
 const jsDataFile = path.join(sourcePath, 'countries.js');
 
+const flagUrl = code => `https://flags.ekmwest.io/flags/${code.toLowerCase()}.svg`;
+
 await build();
 
 async function build() {
@@ -31,7 +33,8 @@ async function createCountriesFromDB() {
             code,
             name,
             common_name,
-            independent: independent ? true : false
+            independent: independent ? true : false,
+            flag_url: flagUrl(code)
         });
     }
 
